@@ -1,5 +1,5 @@
-# Carlos Rebollar Pineda
-# sergio Adriel Muñoz Camarena
+# Carlos 
+# sergio
 
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -57,4 +57,5 @@ riesgo = pd.DataFrame({"promedio": promedio_estudiante, "reprobadas": reprobadas
 riesgo["en_riesgo"] = (riesgo["promedio"] < 6.5) | (riesgo["reprobadas"] >= 1)
 
 print("Estudiantes en riesgo (lista breve)")
+
 print(riesgo[riesgo["en_riesgo"]])
