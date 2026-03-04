@@ -1,0 +1,354 @@
+{
+    "reprobacion_materia": {
+        "Algoritmos": 21.73913043478261,
+        "Fisica": 17.142857142857142,
+        "Estadistica": 16.666666666666664,
+        "Base de Datos": 16.129032258064516,
+        "Calculo": 8.823529411764707,
+        "Programacion": 8.571428571428571
+    },
+    "promedio_carrera": {
+        "Ingenieria Civil": 7.768852459016393,
+        "Ingenieria Industrial": 7.75686274509804,
+        "Ingenieria en Computacion": 7.484999999999999,
+        "Ingenieria Mecanica": 7.379166666666666
+    },
+    "estudiantes_riesgo": [
+        {
+            "id_estudiante": 3,
+            "promedio": 6.1,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 9,
+            "promedio": 6.2,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 10,
+            "promedio": 5.5,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 11,
+            "promedio": 6.4,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 18,
+            "promedio": 5.8,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 22,
+            "promedio": 5.0,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 26,
+            "promedio": 5.0,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 31,
+            "promedio": 5.3,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 35,
+            "promedio": 6.2,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 38,
+            "promedio": 5.5,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 39,
+            "promedio": 6.4,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 41,
+            "promedio": 5.8,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 49,
+            "promedio": 5.7,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 52,
+            "promedio": 6.2,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 55,
+            "promedio": 5.4,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 61,
+            "promedio": 5.0,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 65,
+            "promedio": 5.1,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 69,
+            "promedio": 6.2,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 74,
+            "promedio": 6.3,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 75,
+            "promedio": 5.9,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 86,
+            "promedio": 5.7,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 88,
+            "promedio": 5.7,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 90,
+            "promedio": 6.0,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 93,
+            "promedio": 6.4,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 99,
+            "promedio": 5.3,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 100,
+            "promedio": 6.3,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 104,
+            "promedio": 5.5,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 105,
+            "promedio": 6.2,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 106,
+            "promedio": 6.0,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 107,
+            "promedio": 6.2,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 115,
+            "promedio": 6.3,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 116,
+            "promedio": 6.2,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 120,
+            "promedio": 5.9,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 124,
+            "promedio": 6.3,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 125,
+            "promedio": 5.5,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 126,
+            "promedio": 6.2,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 127,
+            "promedio": 5.3,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 133,
+            "promedio": 5.2,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 141,
+            "promedio": 5.2,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 145,
+            "promedio": 5.8,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 148,
+            "promedio": 5.1,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 153,
+            "promedio": 6.0,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 154,
+            "promedio": 6.0,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 156,
+            "promedio": 5.6,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 158,
+            "promedio": 6.2,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 159,
+            "promedio": 6.0,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 160,
+            "promedio": 5.7,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 168,
+            "promedio": 5.5,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 169,
+            "promedio": 6.3,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 170,
+            "promedio": 5.3,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 179,
+            "promedio": 6.0,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 186,
+            "promedio": 6.0,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 190,
+            "promedio": 6.3,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 191,
+            "promedio": 5.5,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 194,
+            "promedio": 5.8,
+            "reprobadas": 1.0,
+            "en_riesgo": true
+        },
+        {
+            "id_estudiante": 196,
+            "promedio": 6.1,
+            "reprobadas": 0.0,
+            "en_riesgo": true
+        }
+    ]
+}

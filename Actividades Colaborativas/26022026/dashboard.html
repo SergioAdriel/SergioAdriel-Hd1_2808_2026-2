@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Smart Academic Dashboard</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- PapaParse para CSV -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<style>
+body{
+    background:#0f172a;
+    color:white;
+    font-family:system-ui;
+}
+.card{
+    background:#1e293b;
+    border-radius:12px;
+    padding:20px;
+}
+/* pequeñas animaciones */
+.fade-in { animation: fadeIn .6s ease both; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px);} to { opacity:1; transform:none; } }
+</style>
+</head>
+
+<body class="p-10">
+
+<h1 class="text-4xl font-bold mb-6">
+🚀 Smart Academic Intelligence Dashboard
+</h1>
+
+<!-- BARRA DE CONTROLES -->
+<div class="flex gap-3 mb-6">
+    <input id="fileInput" type="file" accept=".csv" class="hidden" />
+    <button id="btnImport" class="bg-indigo-600 px-4 py-2 rounded hover:bg-indigo-500">Importar CSV</button>
+    <div class="flex gap-2">
+        <button id="btnExportJSON" class="bg-green-600 px-4 py-2 rounded hover:bg-green-500">Exportar JSON</button>
+        <button id="btnExportCSV" class="bg-green-700 px-4 py-2 rounded hover:bg-green-600">Exportar CSV</button>
+    </div>
+    <div class="flex gap-2 ml-auto">
+        <button id="btnChartImg1" class="bg-sky-600 px-3 py-2 rounded hover:bg-sky-500">Descargar gráfico Materias</button>
+        <button id="btnChartImg2" class="bg-sky-600 px-3 py-2 rounded hover:bg-sky-500">Descargar gráfico Carreras</button>
+    </div>
+</div>
+
+<h2 class="text-sm text-gray-300 mb-6">Formato CSV soportado (auto-detecta):
+- materias: materia,porcentaje
+- carreras: carrera,promedio
+- estudiantes: id_estudiante,promedio,reprobadas</h2>
+
+<!-- ===================== -->
+<!-- REPROBACION -->
+<!-- ===================== -->
+<div class="card mb-8 fade-in">
+<h2 class="text-xl mb-4">Materias con mayor reprobación</h2>
+<canvas id="chartMaterias" height="120"></canvas>
+<div id="materias" class="space-y-4 mt-6"></div>
+</div>
+
+<!-- ===================== -->
+<!-- CARRERAS -->
+<!-- ===================== -->
+<div class="card mb-8 fade-in">
+<h2 class="text-xl mb-4">Promedio por Carrera</h2>
+<canvas id="chartCarreras" height="120"></canvas>
+<div id="carreras" class="space-y-4 mt-6"></div>
+</div>
+
+<!-- ===================== -->
+<!-- TABLA RIESGO -->
+<!-- ===================== -->
+<div class="card fade-in">
+<h2 class="text-xl mb-4">Estudiantes en Riesgo</h2>
+
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-gray-600">
+<th>ID</th>
+<th>Promedio</th>
+<th>Reprobadas</th>
+<th>Estatus</th>
+</tr>
+</thead>
+
+<tbody id="tablaRiesgo"></tbody>
+</table>
+
+</div>
+
+<script>
+let data = {
+    reprobacion_materia: {},
+    promedio_carrera: {},
+    estudiantes_riesgo: []
+};
+
+let chartM = null;
+let chartC = null;
+
+async function cargarDatos(){
+    try {
+        const res = await fetch("resultados.json");
+        if (!res.ok) throw new Error("No se pudo cargar resultados.json");
+        const json = await res.json();
+        // merge into data
+        data = {
+            ...data,
+            reprobacion_materia: json.reprobacion_materia || {},
+            promedio_carrera: json.promedio_carrera || {},
+            estudiantes_riesgo: json.estudiantes_riesgo || []
+        };
+    } catch(err){
+        console.warn("No se cargó resultados.json, se usarán datos vacíos.", err);
+    }
+    renderAll();
+}
+
+function renderAll(){
+    pintarMaterias(data.reprobacion_materia);
+    pintarCarreras(data.promedio_carrera);
+    pintarRiesgo(data.estudiantes_riesgo);
+    renderCharts();
+}
+
+// =====================
+// MATERIAS (lista y barra)
+// =====================
+function pintarMaterias(materias){
+    const cont=document.getElementById("materias");
+    cont.innerHTML="";
+    Object.entries(materias).forEach(([m,v])=>{
+        cont.innerHTML+=`
+        <div>
+            <div class="flex justify-between">
+                <span>${m}</span>
+                <span>${Number(v).toFixed(1)}%</span>
+            </div>
+            <div class="bg-gray-700 h-3 rounded mt-1 overflow-hidden">
+                <div class="bg-red-500 h-3 rounded"
+                     style="width:${Math.min(100,Number(v))}%"></div>
+            </div>
+        </div>`;
+    });
+}
+
+// =====================
+// CARRERAS
+// =====================
+function pintarCarreras(carreras){
+    const cont=document.getElementById("carreras");
+    cont.innerHTML="";
+    Object.entries(carreras).forEach(([c,p])=>{
+        cont.innerHTML+=`
+        <div>
+            <div class="flex justify-between">
+                <span>${c}</span>
+                <span>${Number(p).toFixed(2)}</span>
+            </div>
+            <div class="bg-gray-700 h-4 rounded mt-1 overflow-hidden">
+                <div class="bg-indigo-500 h-4 rounded"
+                     style="width:${Math.min(100,Number(p)*10)}%"></div>
+            </div>
+        </div>`;
+    });
+}
+
+// =====================
+// RIESGO
+// =====================
+function pintarRiesgo(lista){
+    const tbody=document.getElementById("tablaRiesgo");
+    tbody.innerHTML="";
+    lista.forEach(e=>{
+        tbody.innerHTML+=`
+        <tr class="border-b border-gray-700">
+            <td class="py-2">${e.id_estudiante}</td>
+            <td>${Number(e.promedio).toFixed(2)}</td>
+            <td>${e.reprobadas}</td>
+            <td class="text-red-400 font-bold">EN RIESGO</td>
+        </tr>`;
+    });
+}
+
+// =====================
+// CHARTS con Chart.js
+// =====================
+function renderCharts(){
+    // Materias
+    const ctxM = document.getElementById('chartMaterias').getContext('2d');
+    const materiasLabels = Object.keys(data.reprobacion_materia);
+    const materiasValues = materiasLabels.map(k => Number(data.reprobacion_materia[k]));
+    if(chartM) chartM.destroy();
+    chartM = new Chart(ctxM, {
+        type: 'bar',
+        data: {
+            labels: materiasLabels,
+            datasets: [{
+                label: '% Reprobación',
+                data: materiasValues,
+                backgroundColor: 'rgba(239,68,68,0.85)',
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            animation: { duration: 800 },
+            scales: {
+                y: { beginAtZero: true, max: 100 }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+
+    // Carreras
+    const ctxC = document.getElementById('chartCarreras').getContext('2d');
+    const carrerasLabels = Object.keys(data.promedio_carrera);
+    const carrerasValues = carrerasLabels.map(k => Number(data.promedio_carrera[k]));
+    if(chartC) chartC.destroy();
+    chartC = new Chart(ctxC, {
+        type: 'line',
+        data: {
+            labels: carrerasLabels,
+            datasets: [{
+                label: 'Promedio',
+                data: carrerasValues,
+                backgroundColor: 'rgba(99,102,241,0.15)',
+                borderColor: 'rgba(99,102,241,0.95)',
+                tension: 0.3,
+                fill: true,
+                pointRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            animation: { duration: 900 },
+            scales: {
+                y: { beginAtZero: true, suggestedMax: 10 }
+            },
+            plugins: { legend: { display: false } }
+        }
+    });
+}
+
+// =====================
+// IMPORTAR CSV (PapaParse)
+// =====================
+document.getElementById('btnImport').addEventListener('click', ()=> document.getElementById('fileInput').click());
+document.getElementById('fileInput').addEventListener('change', (e)=>{
+    const f = e.target.files[0];
+    if(!f) return;
+    Papa.parse(f, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results){
+            const rows = results.data;
+            const fields = results.meta.fields.map(s => s.toLowerCase());
+            // detectar tipo por encabezados
+            if(fields.includes('id_estudiante') && fields.includes('promedio')){
+                // estudiantes
+                data.estudiantes_riesgo = rows.map(r => ({
+                    id_estudiante: r.id_estudiante || r.ID_ESTUDIANTE || r['id'] || '',
+                    promedio: Number(r.promedio || r.PROMEDIO || r['avg'] || 0),
+                    reprobadas: Number(r.reprobadas || r.REPROBADAS || r['failed'] || 0)
+                }));
+            } else if(fields.includes('materia') && (fields.includes('porcentaje') || fields.includes('porc'))){
+                // materias
+                const obj = {};
+                rows.forEach(r => {
+                    const k = r.materia || r.MATERIA;
+                    const v = Number(r.porcentaje || r.PORCENTAJE || r.porc || r.PORC || 0);
+                    if(k) obj[k] = v;
+                });
+                data.reprobacion_materia = obj;
+            } else if(fields.includes('carrera') && fields.includes('promedio')){
+                // carreras
+                const obj = {};
+                rows.forEach(r => {
+                    const k = r.carrera || r.CARRERA;
+                    const v = Number(r.promedio || r.PROMEDIO || 0);
+                    if(k) obj[k] = v;
+                });
+                data.promedio_carrera = obj;
+            } else {
+                alert('CSV no reconocido. Usa encabezados: (materia,porcentaje) o (carrera,promedio) o (id_estudiante,promedio,reprobadas)');
+                return;
+            }
+            renderAll();
+            // limpiar input para permitir re-importar mismo archivo si es necesario
+            e.target.value = '';
+        },
+        error: function(err){
+            alert('Error leyendo CSV: ' + err.message);
+        }
+    });
+});
+
+// =====================
+// EXPORTAR JSON y CSV
+// =====================
+document.getElementById('btnExportJSON').addEventListener('click', ()=>{
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'resultados_export.json'; a.click();
+    URL.revokeObjectURL(url);
+});
+
+document.getElementById('btnExportCSV').addEventListener('click', ()=>{
+    // generamos CSV combinado: seccion,clave,valor para materias/carreras y estudiantes con sus columnas
+    let csv = 'seccion,clave,valor1,valor2\n';
+    Object.entries(data.reprobacion_materia).forEach(([k,v])=>{
+        csv += `materia,${escapeForCsv(k)},${v},\n`;
+    });
+    Object.entries(data.promedio_carrera).forEach(([k,v])=>{
+        csv += `carrera,${escapeForCsv(k)},${v},\n`;
+    });
+    data.estudiantes_riesgo.forEach(s=>{
+        csv += `estudiante,${escapeForCsv(s.id_estudiante)},${s.promedio},${s.reprobadas}\n`;
+    });
+    const blob = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'resultados_export.csv'; a.click();
+    URL.revokeObjectURL(url);
+});
+
+function escapeForCsv(s){
+    if(typeof s !== 'string') s = String(s);
+    if(s.includes(',') || s.includes('"') || s.includes('\n')) return `"${s.replace(/"/g,'""')}"`;
+    return s;
+}
+
+// =====================
+// DESCARGAR IMAGENES DE GRÁFICOS
+// =====================
+document.getElementById('btnChartImg1').addEventListener('click', ()=>{
+    if(!chartM) return alert('Gráfico de materias no está listo.');
+    downloadChartImage(chartM, 'materias.png');
+});
+document.getElementById('btnChartImg2').addEventListener('click', ()=>{
+    if(!chartC) return alert('Gráfico de carreras no está listo.');
+    downloadChartImage(chartC, 'carreras.png');
+});
+
+function downloadChartImage(chart, filename){
+    const url = chart.toBase64Image();
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+}
+
+// Iniciar
+cargarDatos();
+
+</script>
+
+</body>
+</html>
